@@ -1,3 +1,11 @@
+/*typedef enum fonctionActivation fonctionActivation;
+enum Volume
+{
+    ReLU, sigmoide, Heaviside
+};
+*/
+
+
 /*
  Structure d'un neurone
  
@@ -13,12 +21,53 @@
  
  */
  
-struct neurone
+ 
+ struct Neurone
 {
   double *x;//vecteur d'entré
   double *w;//les poids synaptiques
   char fonction; // Fonction d'activation 1 2 3 4 selon le fichier fonction.h.
 
-  double *sortie;//vecteur de sortie retournée par le neurone
+  double *sortie;//vecteur  position du neurone qui va étre ajustable
 };
+typedef struct Neurone s_Neurone;
+
+
+
+
+
+/*
+ Structure de notre réseau de neurons
+ */
+struct Reseau
+{
+  int n;  // Taille du vecteur d'entré
+  
+  double *captors; // le vecteur courant
+  
+} Reseau;
+
+
+ 
+ 
+ 
+/*typedef struct neurone neurone; 
+ 
+struct neurone
+{
+  double *x;//vecteur d'entré
+  double *w;//les poids synaptiques
+  fonctionActivation fonction; // Fonction d'activation selon le fichier le enum.
+  double sortie;//valeur de sortie retournée par le neurone
+  neurone *connection; //tout les neurones qui sont reliés a ce dernier 
+   
+};*/
+
+
+
+
+
+
+
+
 

@@ -10,7 +10,7 @@ Identité/Rampe
       f(x)=x
 */
 
-int fIdentite(int x);
+double fIdentite(int x);
 
 
 
@@ -23,7 +23,7 @@ f(x)=|1 si x>=0
      |_
 */
 
-int fMarche(int x);
+double fMarche(int x);
 
 
 
@@ -34,7 +34,7 @@ int fMarche(int x);
 f(x)= ---------------
         1  + e(-x)
 */
-int fsigmoid(int x);
+double fsigmoid(int x);
 
 
 /*
@@ -44,7 +44,7 @@ https://fr.wikipedia.org/wiki/Fonction_d%27activation#/media/Fichier:Activation_
 f(x)= --------------- -1
         1  + e(-2x)
 */
-int tanh(int x);
+double tanhf(int x);
 
 /***********************************************************   Unité de rectification linéaire (ReLU)  ****************************************************/
 
@@ -57,5 +57,16 @@ f(x)=|x si x>=0
      |_
 */
 
-int fRelu(int x);
+double fRelu(int x);
+
+
 double somme(int tab[], int taille);
+
+
+double random_w();
+
+double *init_rand_tab(int tailleTableau);
+void affiche(int *tableau, int tailleTableau);
+
+
+

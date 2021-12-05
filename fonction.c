@@ -1,44 +1,109 @@
-/*
-int layerSizes[10] = {0,0,0,0,0,0,784,1000,1000,10};
-float* layers[10] = {0};
-float* errors[10] = {0};
-float*  weights[10] = {0};
-int i,j;
-int activation=1;//relu
-// FORWARD PROPAGATION
-int forwardProp(int x){
-    int i,j,k,imax;
-    float sum, esum, max;
-    // INPUT LAYER - RECEIVES 28X28 IMAGES
-    for (i=0;i<784;i++) layers[10-numLayers][i] = trainImages[x][i];
-    // HIDDEN LAYERS - RELU ACTIVATION
-    for (k=11-numLayers;k<9;k++)
-    for (i=0;i<layerSizes[k];i++){
-        sum = 0.0;
-        for (j=0;j<layerSizes[k-1]+1;j++)
-            sum += layers[k-1][j]*weights[k][i*(layerSizes[k-1]+1)+j];
-        if (activation==1) layers[k][i] = ReLU(sum);
-        else if (activation==2) layers[k][i] = TanH(sum);
-    }
-    // OUTPUT LAYER - SOFTMAX ACTIVATION
-    esum = 0.0;
-    for (i=0;i<layerSizes[9];i++){
-        sum = 0.0;
-        for (j=0;j<layerSizes[8]+1;j++)
-            sum += layers[8][j]*weights[9][i*(layerSizes[8]+1)+j];
-        if (sum>30) return -1; //GRADIENT EXPLODED
-        layers[9][i] = exp(sum);
-        esum += layers[9][i];
-    }
-    // SOFTMAX FUNCTION
-    max = layers[9][0]; imax=0;
-    for (i=0;i<layerSizes[9];i++){
-        if (layers[9][i]>max){
-            max = layers[9][i];
-            imax = i;
-        }
-        layers[9][i] = layers[9][i] / esum;
-    }
-    return imax;
+
+#include "fonction.h"
+
+
+
+double fIdentite(int x){
+
+return x;
 }
-*/
+
+/******************************************************************************************************************************/
+
+double fMarche(int x){
+
+ if(x<0)
+    return 0;
+ else
+    return 1;
+
+}
+
+
+/******************************************************************************************************************************/
+
+
+double fsigmoid(int x){
+
+ return 1/(1+exp(-x));
+}
+
+
+
+/******************************************************************************************************************************/
+
+
+
+double tanhf(int x){
+
+ return (2/(1+exp(-2*x)))-1;
+}
+
+
+
+/******************************************************************************************************************************/
+double fRelu(int x){
+
+ if(x<0)
+    return 0;
+ else
+    return x;
+
+}
+
+
+
+
+/******************************************************************************************************************************/
+double somme(int tab[], int taille) {
+   int i;
+
+   double sum = 0;
+   for (i = 0; i < taille; ++i) {
+      sum += tab[i];
+   }
+
+   return sum;
+}
+
+
+
+/******************************************************************************************************************************/
+double random_w() { 
+   return ((double)rand())/((double)RAND_MAX); 
+}
+
+
+/******************************************************************************************************************************/
+double *init_rand_tab(int tailleTableau) { 
+
+     
+    
+    double *tableau=malloc(tailleTableau*sizeof(double));
+     for (int i = 0 ; i < tailleTableau ; i++)
+    {
+        tableau[i]=random_w();
+    }
+   return  tableau;
+}
+
+
+/******************************************************************************************************************************/
+void affiche(int *tableau, int tailleTableau)
+{
+    int i;
+ 
+    for (i = 0 ; i < tailleTableau ; i++)
+    {
+        printf("%d\n", tableau[i]);
+    }
+}
+
+/*********************************************************************************************************************************/
+
+
+
+
+
+
+
