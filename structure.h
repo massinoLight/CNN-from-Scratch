@@ -28,7 +28,7 @@ enum Volume
   double *w;//les poids synaptiques
   char fonction; // Fonction d'activation 1 2 3 4 selon le fichier fonction.h.
 
-  double *sortie;//vecteur  position du neurone qui va étre ajustable
+  double sortie;//vecteur  position du neurone qui va étre ajustable
 };
 typedef struct Neurone s_Neurone;
 
@@ -39,13 +39,13 @@ typedef struct Neurone s_Neurone;
 /*
  Structure de notre réseau de neurons
  */
-struct Reseau
+struct s_Reseau
 {
   int n;  // Taille du vecteur d'entré
   
-  double *captors; // le vecteur courant
+  s_Neurone chouche[3]; // une chouche de neurone 
   
-} Reseau;
+} s_Reseau;
 
 
  
@@ -62,12 +62,4 @@ struct neurone
   neurone *connection; //tout les neurones qui sont reliés a ce dernier 
    
 };*/
-
-
-
-
-
-
-
-
 

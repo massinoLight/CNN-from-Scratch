@@ -3,14 +3,14 @@
 
 
 
-double fIdentite(int x){
+double fIdentite(double x){
 
 return x;
 }
 
 /******************************************************************************************************************************/
 
-double fMarche(int x){
+double fMarche(double x){
 
  if(x<0)
     return 0;
@@ -23,7 +23,7 @@ double fMarche(int x){
 /******************************************************************************************************************************/
 
 
-double fsigmoid(int x){
+double fsigmoid(double x){
 
  return 1/(1+exp(-x));
 }
@@ -34,7 +34,7 @@ double fsigmoid(int x){
 
 
 
-double tanhf(int x){
+double tanhf(double x){
 
  return (2/(1+exp(-2*x)))-1;
 }
@@ -42,7 +42,7 @@ double tanhf(int x){
 
 
 /******************************************************************************************************************************/
-double fRelu(int x){
+double fRelu(double x){
 
  if(x<0)
     return 0;
@@ -55,7 +55,7 @@ double fRelu(int x){
 
 
 /******************************************************************************************************************************/
-double somme(int tab[], int taille) {
+double somme(double tab[], double taille) {
    int i;
 
    double sum = 0;
