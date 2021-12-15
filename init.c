@@ -10,7 +10,7 @@ void init_n_conf()
 
 
 //initialisation d'un neuron  
-s_Neurone init_neurone(double *vecteurEntree,fonctionActivation activation)
+s_Neurone init_neurone(double vecteurEntree[],fonctionActivation activation)
 {
 
 s_Neurone neurone;
