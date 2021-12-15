@@ -14,11 +14,11 @@ enum fonctionActivation
  
  
  x1___
-      \   __________
+      \w1 __________
  x2____\ |          |
  ._____  |somme | f | _______    Y
  ._____/ |          |           
- .____/  |__________|
+ .____/wn|__________|
  xn__/
  
  
@@ -42,8 +42,20 @@ typedef struct Neurone s_Neurone;
  */
 struct s_Reseau
 {
-  int n;  // Taille du vecteur d'entré
+  int n;  // nb de couche que comporte le rx 
   
   s_Neurone couche[3]; // une couche de neurone 
   
 } s_Reseau;
+
+
+/*
+ Structure d'couche
+ */
+struct s_Layer
+{
+   const int n;  // Nb de neurone que comporte la couche 
+  
+  s_Neurone *couche; // une couche de neurone 
+  
+} s_Layer;
