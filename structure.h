@@ -1,9 +1,10 @@
-/*typedef enum fonctionActivation fonctionActivation;
-enum Volume
-{
-    ReLU, sigmoide, Heaviside
-};
+/*
+On déclare les fonctions d'actiovations sous forme d'énum pour faire plus propre 
 */
+typedef enum  
+{
+    ReLU, sigmoide, tangante,Identite,Marche
+}fonctionActivation;
 
 
 /*
@@ -46,20 +47,3 @@ struct s_Reseau
   s_Neurone couche[3]; // une couche de neurone 
   
 } s_Reseau;
-
-
- 
- 
- 
-/*typedef struct neurone neurone; 
- 
-struct neurone
-{
-  double *x;//vecteur d'entré
-  double *w;//les poids synaptiques
-  fonctionActivation fonction; // Fonction d'activation selon le fichier le enum.
-  double sortie;//valeur de sortie retournée par le neurone
-  neurone *connection; //tout les neurones qui sont reliés a ce dernier 
-   
-};*/
-
