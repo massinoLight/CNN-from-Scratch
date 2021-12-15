@@ -68,8 +68,10 @@ double somme(double tab[], double taille);
 
 double random_w();
 
-double *init_rand_tab(int tailleTableau);
+double *init_rand_tab(double tableau[],int tailleTableau);
 void affiche(int *tableau, int tailleTableau);
+
+
 
 
 

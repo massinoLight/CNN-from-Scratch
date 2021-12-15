@@ -31,7 +31,7 @@ neurone.sortie=0.0;
 double somme=0.0;
 double result=0.0;
 
-neurone.w=init_rand_w(s_Reseau.n);
+neurone.w=init_rand_w(neurone.w,s_Reseau.n);
 
 
 neurone.x=vecteurEntree;
@@ -74,3 +74,5 @@ neurone.sortie=result;
 
     return neurone;
 }
+
+
