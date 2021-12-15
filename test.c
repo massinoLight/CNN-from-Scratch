@@ -9,14 +9,22 @@
 int main()
 {
     
+init_n_conf();
+s_Neurone neurone1;
 
-s_Neurone neurone;
+double vecteur[10] = {1.0, 3.0, 7.0, 3.0,2.0,7.0,4.0,2.0,1.0,0.0};
 
-double vecteur[10] = {0.0, 0.0, 0.0, 3.0,2.0,7.0,4.0,2.0,1.0,0.0};
+neurone1=init_neurone(neurone1,vecteur ,ReLU);
 
-neurone=init_neurone(vecteur ,ReLU);
 
-printf("%f\n", neurone.sortie);
+for (int j=0;j<s_Reseau.n;j++)
+{
+    printf("%f  ,  %f \n", neurone1.w[j],neurone1.x[j]);
+
+}
+
+
+printf("%f\n", neurone1.sortie);
 
 return 0;
 

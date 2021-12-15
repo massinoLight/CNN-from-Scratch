@@ -1,10 +1,12 @@
 /*
 On déclare les fonctions d'actiovations sous forme d'énum pour faire plus propre 
 */
-typedef enum  
+
+typedef enum fonctionActivation fonctionActivation;
+enum fonctionActivation
 {
     ReLU, sigmoide, tangante,Identite,Marche
-}fonctionActivation;
+};
 
 
 /*
@@ -27,8 +29,6 @@ typedef enum
 {
   double *x;//vecteur d'entré
   double *w;//les poids synaptiques
-  char fonction; // Fonction d'activation 1 2 3 4 selon le fichier fonction.h.
-
   double sortie;//valeur en sorite du neurone 
 };
 typedef struct Neurone s_Neurone;

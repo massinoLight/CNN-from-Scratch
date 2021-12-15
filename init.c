@@ -9,19 +9,31 @@ void init_n_conf()
 }
 
 
+s_Neurone init_neurone_vide(s_Neurone neurone){
+neurone.x=(double*)malloc(sizeof(double)*s_Reseau.n);
+neurone.w=(double*)malloc(sizeof(double)*s_Reseau.n);
+neurone.sortie=0;
+   for (int j=0;j<s_Reseau.n;j++)
+   {
+   neurone.w[j]=0;
+   neurone.x[j]=0;
+   }
+
+return neurone;
+
+}
+
+
 //initialisation d'un neuron  
-s_Neurone init_neurone(double vecteurEntree[],fonctionActivation activation)
+s_Neurone init_neurone(s_Neurone neurone,double vecteurEntree[],fonctionActivation activation)
 {
-
-s_Neurone neurone;
-
-
 init_n_conf();
 neurone.x=(double*)malloc(sizeof(double)*s_Reseau.n);
 neurone.w=(double*)malloc(sizeof(double)*s_Reseau.n);
+neurone.sortie=0.0;
 
 double somme=0.0;
-
+double result=0.0;
 for (int j=0;j<s_Reseau.n;j++)
 {
 neurone.w[j]=random_w();
@@ -31,38 +43,39 @@ neurone.x=vecteurEntree;
 
 
 
-
-for (int j=0;j<s_Reseau.n;j++)
-{
-printf("%f\n", neurone.x[j]);
-neurone.w[j]=random_w();			
-}
-
-
 //on somme les entrées 
-for (int i = 0 ; i < 4 ; i++)
+for (int i = 0 ; i < s_Reseau.n ; i++)
 {
 somme=somme+(neurone.w[i]*neurone.x[i]);
 }
-
 
 //On applique la fonction d'activation selon celle choisit en paramétre 
 
 switch( activation )
 {
     case ReLU:
-        neurone.sortie=fRelu(somme);
+        result=fRelu(somme);
+        break;
     case tangante:
-        neurone.sortie=tanhf(somme);
+        result=tanhf(somme);
+        break;
     case sigmoide:
-        neurone.sortie=fsigmoid(somme);
+        result=fsigmoid(somme);
+        break;
     case Identite:
-        neurone.sortie=fIdentite(somme);
+        result=fIdentite(somme);
+        break;
     case Marche:
-        neurone.sortie=fMarche(somme);
+        result=fMarche(somme);
+        break;
+    default:
+       result=fRelu(somme);
+       break;
+
 }
 
+ 
+neurone.sortie=result;
 
-return neurone;
-
+    return neurone;
 }
