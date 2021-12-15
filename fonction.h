@@ -1,3 +1,6 @@
+#include <math.h>
+#include <time.h>
+
 /*
 Fichier de déclaration et déscription des fonctions utilisées 
 
@@ -44,7 +47,7 @@ https://fr.wikipedia.org/wiki/Fonction_d%27activation#/media/Fichier:Activation_
 f(x)= --------------- -1
         1  + e(-2x)
 */
-double tanhf(double x);
+double tanhff(double x);
 
 /***********************************************************   Unité de rectification linéaire (ReLU)  ****************************************************/
 

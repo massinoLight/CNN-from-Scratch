@@ -34,7 +34,7 @@ double fsigmoid(double x){
 
 
 
-double tanhf(double x){
+double tanhfs(double x){
 
  return (2/(1+exp(-2*x)))-1;
 }
@@ -70,6 +70,7 @@ double somme(double tab[], double taille) {
 
 /******************************************************************************************************************************/
 double random_w() { 
+   srand ( time(NULL) );
    return ((double)rand())/((double)RAND_MAX); 
 }
 
