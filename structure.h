@@ -52,10 +52,11 @@ struct s_Reseau
 /*
  Structure d'couche
  */
-struct s_Layer
+struct Layer
 {
-   const int n;  // Nb de neurone que comporte la couche 
+   int n;  // Nb de neurone que comporte la couche 
   
   s_Neurone *couche; // une couche de neurone 
   
-} s_Layer;
+};
+typedef struct Layer s_Layer;

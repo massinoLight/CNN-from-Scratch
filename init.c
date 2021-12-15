@@ -2,12 +2,6 @@
 #include "fonction.h"
 
 
-void init_n_conf()
-{
-    s_Reseau.n=10;
-    
-}
-
 
 s_Neurone init_neurone_vide(s_Neurone neurone){
 neurone.x=(double*)malloc(sizeof(double)*s_Reseau.n);
@@ -18,26 +12,27 @@ neurone.sortie=0;
    neurone.w[j]=0;
    neurone.x[j]=0;
    }
-
+   neurone.sortie=0.0;
 return neurone;
 
 }
 
 
 //initialisation d'un neuron  
-s_Neurone init_neurone(s_Neurone neurone,double vecteurEntree[],fonctionActivation activation)
+s_Neurone init_neurone(double vecteurEntree[],fonctionActivation activation)
 {
-init_n_conf();
+s_Neurone neurone;
+neurone=init_neurone_vide(neurone);
+
 neurone.x=(double*)malloc(sizeof(double)*s_Reseau.n);
 neurone.w=(double*)malloc(sizeof(double)*s_Reseau.n);
 neurone.sortie=0.0;
 
 double somme=0.0;
 double result=0.0;
-for (int j=0;j<s_Reseau.n;j++)
-{
-neurone.w[j]=random_w();
-}
+
+neurone.w=init_rand_w(s_Reseau.n);
+
 
 neurone.x=vecteurEntree;
 

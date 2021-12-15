@@ -76,14 +76,16 @@ double random_w() {
 
 
 /******************************************************************************************************************************/
-double *init_rand_tab(int tailleTableau) { 
+double *init_rand_w(int tailleTableau) { 
 
      
     
     double *tableau=malloc(tailleTableau*sizeof(double));
+    srand(time(NULL));
      for (int i = 0 ; i < tailleTableau ; i++)
     {
-        tableau[i]=random_w();
+       
+        tableau[i]=((double)rand())/((double)RAND_MAX);
     }
    return  tableau;
 }
