@@ -34,9 +34,20 @@ srand(time(NULL));
 double vecteur[10] = {1.0, 3.0, 7.0, 3.0,2.0,7.0,4.0,2.0,1.0,0.0};   
 init_n_conf(10);
 
-s_Layer layer=init_layer(vecteur,3);
 
-visalisation(layer);
+
+s_Reseau perceptron=init_perceptron(vecteur,3);
+
+
+
+
+
+for (int x = 0; x < perceptron.nb; x++)
+    {
+         printf("couche %d\n",x);
+         visalisation(perceptron.couches[x]);
+       
+    }
 
 return 0;
 

@@ -81,6 +81,8 @@ neurone.sortie=result;
 }
 
 
+
+//fonction pour initialiser une couche avec un vecteur en entré et le nombre de neurones que va comporter cette couche
 s_Layer init_layer(double vecteur[],int nbNeurone){
 
 
@@ -99,4 +101,29 @@ layer1.couche=chouche1;
 layer1.sortie=sortie;
 
 return layer1;
+}
+
+
+
+
+
+s_Reseau init_perceptron(double vecteurEntree[],int profondeur){
+
+s_Reseau perceptron;
+perceptron.nb=profondeur;
+perceptron.couches = malloc(perceptron.nb * sizeof *(perceptron.couches));
+//nombre de neurones par couche quon va décrémenter au fur et a mesure
+int nb=2;
+//Notre premiére couche avec notre vecteur n'entre et 3 neurones 
+perceptron.couches[0]=init_layer(vecteurEntree,3);
+ for (int x = 1; x < perceptron.nb; x++)
+    {
+        perceptron.couches[x]=init_layer(perceptron.couches[x-1].sortie,nb);
+        nb--;
+       
+    }
+
+
+return perceptron;
+
 }

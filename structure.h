@@ -70,7 +70,7 @@ struct Reseau
 {
   
   int nb; //nb de couche que compotre le perceptron 
-  s_Layer *couche; // une couche de neurone 
+  s_Layer *couches; // un ensemble de couches 
   
 };
 
