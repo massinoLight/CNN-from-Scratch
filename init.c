@@ -105,7 +105,7 @@ return layer1;
 
 
 
-
+//initalisation d'un perceptron avec un vecteur en entre et sa profondeur ici on décrémente le nombre de neurones pour chaque layer au fur et a mesur e
 
 s_Reseau init_perceptron(double vecteurEntree[],int profondeur){
 

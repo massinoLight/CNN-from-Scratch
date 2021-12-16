@@ -31,16 +31,10 @@ printf("\n");
 int main()
 {
 srand(time(NULL));
-double vecteur[10] = {1.0, 3.0, 7.0, 3.0,2.0,7.0,4.0,2.0,1.0,0.0};   
+double vecteur[10] = {1.0, 3.0, 7.0, 3.0,2.0,7.0,4.0,2.0,1.0,0.0};  
+//on initalise la taille du vecteur d'entre je met 10 au depart mais on va recup ca selon les images dentrées  
 init_n_conf(10);
-
-
-
 s_Reseau perceptron=init_perceptron(vecteur,3);
-
-
-
-
 
 for (int x = 0; x < perceptron.nb; x++)
     {
