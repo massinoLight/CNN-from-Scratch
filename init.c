@@ -26,19 +26,19 @@ return neurone;
 
 
 //initialisation d'un neuron  
-s_Neurone init_neurone(double vecteurEntree[],fonctionActivation activation)
+s_Neurone init_neurone(double vecteurEntree[],int tailleVecteurEntree,fonctionActivation activation)
 {
 s_Neurone neurone;
-neurone=init_neurone_vide(neurone);
 
-neurone.x=(double*)malloc(sizeof(double)*taille_vecteur_Entree);
-neurone.w=(double*)malloc(sizeof(double)*taille_vecteur_Entree);
+
+neurone.x=(double*)malloc(sizeof(double)*tailleVecteurEntree);
+neurone.w=(double*)malloc(sizeof(double)*tailleVecteurEntree);
 neurone.sortie=0.0;
 
 double somme=0.0;
 
 
-neurone.w=init_rand_w(neurone.w,taille_vecteur_Entree);
+neurone.w=init_rand_w(neurone.w,tailleVecteurEntree);
 
 
 neurone.x=vecteurEntree;
@@ -46,7 +46,7 @@ neurone.x=vecteurEntree;
 
 
 //on somme les entrées 
-for (int i = 0 ; i < taille_vecteur_Entree ; i++)
+for (int i = 0 ; i < tailleVecteurEntree ; i++)
 {
 somme=somme+(neurone.w[i]*neurone.x[i]);
 }
@@ -95,7 +95,7 @@ double *sortie=(double*)malloc(sizeof(double)*layer1.n);
 
  for (int x = 0; x < layer1.n; x++)
     {
-        chouche1[x]=init_neurone(vecteur ,ReLU);
+        chouche1[x]=init_neurone(vecteur ,taille_vecteur_Entree,ReLU);
         sortie[x]=chouche1[x].sortie;
        
     }
@@ -118,13 +118,17 @@ perceptron.couches = malloc(perceptron.nb * sizeof *(perceptron.couches));
 int nb=2;
 //Notre premiére couche avec notre vecteur n'entre et 3 neurones 
 perceptron.couches[0]=init_layer(vecteurEntree,3);
+printf("couche %d\n",0);
+visalisation(perceptron.couches[0]);
 taille_vecteur_Entree=perceptron.couches[0].n;
  for (int x = 1; x < perceptron.nb; x++)
     {
         perceptron.couches[x]=init_layer(perceptron.couches[x-1].sortie,nb);
         nb--;
         taille_vecteur_Entree=perceptron.couches[x].n;
-       
+        printf("couche %d\n",x);
+         visalisation(perceptron.couches[x]);
+
     }
 
 
