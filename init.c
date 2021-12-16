@@ -3,15 +3,16 @@
 
 void init_n_conf(int tailleVecteur)
 {
-    s_Reseau.n=tailleVecteur;
+    
+    s_conf.n=tailleVecteur;
     
 }
 
 s_Neurone init_neurone_vide(s_Neurone neurone){
-neurone.x=(double*)malloc(sizeof(double)*s_Reseau.n);
-neurone.w=(double*)malloc(sizeof(double)*s_Reseau.n);
+neurone.x=(double*)malloc(sizeof(double)*s_conf.n);
+neurone.w=(double*)malloc(sizeof(double)*s_conf.n);
 neurone.sortie=0;
-   for (int j=0;j<s_Reseau.n;j++)
+   for (int j=0;j<s_conf.n;j++)
    {
    neurone.w[j]=0;
    neurone.x[j]=0;
@@ -28,14 +29,14 @@ s_Neurone init_neurone(double vecteurEntree[],fonctionActivation activation)
 s_Neurone neurone;
 neurone=init_neurone_vide(neurone);
 
-neurone.x=(double*)malloc(sizeof(double)*s_Reseau.n);
-neurone.w=(double*)malloc(sizeof(double)*s_Reseau.n);
+neurone.x=(double*)malloc(sizeof(double)*s_conf.n);
+neurone.w=(double*)malloc(sizeof(double)*s_conf.n);
 neurone.sortie=0.0;
 
 double somme=0.0;
 double result=0.0;
 
-neurone.w=init_rand_w(neurone.w,s_Reseau.n);
+neurone.w=init_rand_w(neurone.w,s_conf.n);
 
 
 neurone.x=vecteurEntree;
@@ -43,7 +44,7 @@ neurone.x=vecteurEntree;
 
 
 //on somme les entrées 
-for (int i = 0 ; i < s_Reseau.n ; i++)
+for (int i = 0 ; i < s_conf.n ; i++)
 {
 somme=somme+(neurone.w[i]*neurone.x[i]);
 }

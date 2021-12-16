@@ -10,6 +10,18 @@ enum fonctionActivation
 
 
 /*
+ Structure de notre réseau de neurons
+ */
+struct s_conf
+{
+  int n;  // taille du vecteur d'entré 
+   
+  
+} s_conf;
+
+
+
+/*
  Structure d'un neurone
  
  
@@ -35,27 +47,31 @@ typedef struct Neurone s_Neurone;
 
 
 /*
- Structure d'couche
+ Structure d'une couche
  */
 struct Layer
 {
    int n;  // Nb de neurone que comporte la couche 
   
-  s_Neurone *couche; // une couche de neurone 
+  s_Neurone *couche; // un ensemble de neurones
+  double *sortie; //vecteur de sortie de la couche (resultats des neurones de cette couche) 
   
 };
 typedef struct Layer s_Layer;
 
 
+
+
+
 /*
  Structure de notre réseau de neurons
  */
-struct s_Reseau
+struct Reseau
 {
-  int n;  // taille du vecteur d'entré 
+  
   int nb; //nb de couche que compotre le perceptron 
   s_Layer *couche; // une couche de neurone 
   
-} s_Reseau;
+};
 
-
+typedef struct Reseau s_Reseau;
