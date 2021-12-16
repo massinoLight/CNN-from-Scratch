@@ -1,7 +1,11 @@
 #include "init.h"
 #include "fonction.h"
 
-
+void init_n_conf(int tailleVecteur)
+{
+    s_Reseau.n=tailleVecteur;
+    
+}
 
 s_Neurone init_neurone_vide(s_Neurone neurone){
 neurone.x=(double*)malloc(sizeof(double)*s_Reseau.n);

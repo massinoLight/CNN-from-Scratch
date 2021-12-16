@@ -54,7 +54,7 @@ struct s_Reseau
 {
   int n;  // taille du vecteur d'entré 
   int nb; //nb de couche que compotre le perceptron 
-  s_Layer couche[3]; // une couche de neurone 
+  s_Layer *couche; // une couche de neurone 
   
 } s_Reseau;
 
