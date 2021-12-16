@@ -27,36 +27,16 @@ printf("\n");
 
 
 
+
 int main()
 {
 srand(time(NULL));
 double vecteur[10] = {1.0, 3.0, 7.0, 3.0,2.0,7.0,4.0,2.0,1.0,0.0};   
 init_n_conf(10);
 
-s_Reseau perceptron;
-perceptron.nb=3;
-s_Layer *layer = malloc(perceptron.nb* sizeof *(layer));
-//premiere couche a initaliser a part ici on met 3 neurones 
-perceptron.couche[0].n=3;
+s_Layer layer=init_layer(vecteur,3);
 
-//premiere couche a initaliser a part ici on met 3 neurones 
-
- s_Neurone* chouche1 = malloc(layer[0].n * sizeof *(chouche1));
-
-
- for (int x = 0; x < perceptron.couche[0].n; x++)
-    {
-        chouche1[x]=init_neurone(vecteur ,ReLU);
-       
-    }
-layer[0].couche=chouche1;
-
-
-
-
-
-visalisation(layer[0]);
-
+visalisation(layer);
 
 return 0;
 

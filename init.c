@@ -81,3 +81,22 @@ neurone.sortie=result;
 }
 
 
+s_Layer init_layer(double vecteur[],int nbNeurone){
+
+
+s_Layer layer1;
+layer1.n=nbNeurone;
+ s_Neurone* chouche1 = malloc(layer1.n * sizeof *(chouche1));
+double *sortie=(double*)malloc(sizeof(double)*layer1.n);
+
+ for (int x = 0; x < layer1.n; x++)
+    {
+        chouche1[x]=init_neurone(vecteur ,ReLU);
+        sortie[x]=chouche1[x].sortie;
+       
+    }
+layer1.couche=chouche1;
+layer1.sortie=sortie;
+
+return layer1;
+}
