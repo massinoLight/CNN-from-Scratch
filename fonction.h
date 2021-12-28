@@ -63,6 +63,7 @@ f(x)=|x si x>=0
 double fRelu(double x);
 
 
+
 double somme(double tab[], double taille);
 
 

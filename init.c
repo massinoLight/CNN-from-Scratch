@@ -1,7 +1,7 @@
 #include "init.h"
 #include "fonction.h"
 
-int taille_vecteur_Entree = 10;
+int taille_vecteur_Entree = 2;
 
 void init_n_conf(int tailleVecteur)
 {
@@ -9,6 +9,8 @@ void init_n_conf(int tailleVecteur)
     s_conf.n=tailleVecteur;
     
 }
+
+
 
 s_Neurone init_neurone_vide(s_Neurone neurone){
 neurone.x=(double*)malloc(sizeof(double)*taille_vecteur_Entree);
@@ -26,19 +28,19 @@ return neurone;
 
 
 //initialisation d'un neuron  
-s_Neurone init_neurone(double vecteurEntree[],int tailleVecteurEntree,fonctionActivation activation)
+s_Neurone init_neurone(double vecteurEntree[],fonctionActivation activation)
 {
 s_Neurone neurone;
 
 
-neurone.x=(double*)malloc(sizeof(double)*tailleVecteurEntree);
-neurone.w=(double*)malloc(sizeof(double)*tailleVecteurEntree);
+neurone.x=(double*)malloc(sizeof(double)*taille_vecteur_Entree);
+neurone.w=(double*)malloc(sizeof(double)*taille_vecteur_Entree);
 neurone.sortie=0.0;
 
 double somme=0.0;
 
 
-neurone.w=init_rand_w(neurone.w,tailleVecteurEntree);
+neurone.w=init_rand_w(neurone.w,taille_vecteur_Entree);
 
 
 neurone.x=vecteurEntree;
@@ -46,7 +48,7 @@ neurone.x=vecteurEntree;
 
 
 //on somme les entrées 
-for (int i = 0 ; i < tailleVecteurEntree ; i++)
+for (int i = 0 ; i < taille_vecteur_Entree ; i++)
 {
 somme=somme+(neurone.w[i]*neurone.x[i]);
 }
@@ -85,22 +87,41 @@ switch( activation )
 
 
 //fonction pour initialiser une couche avec un vecteur en entré et le nombre de neurones que va comporter cette couche
-s_Layer init_layer(double vecteur[],int nbNeurone){
+s_Layer init_layer(double vecteur[],int nbNeurone,fonctionActivation activation){
 
-
+int taille_vecteur = sizeof(vecteur)/sizeof(vecteur[0]);
 s_Layer layer1;
 layer1.n=nbNeurone;
- s_Neurone* chouche1 = malloc(layer1.n * sizeof *(chouche1));
+s_Neurone* coucheN = malloc(layer1.n * sizeof *(coucheN));
 double *sortie=(double*)malloc(sizeof(double)*layer1.n);
+
+layer1.couche = malloc(layer1.n * sizeof *(layer1.couche ));
+layer1.sortie=(double*)calloc(taille_vecteur,sizeof(double)*taille_vecteur);
 
  for (int x = 0; x < layer1.n; x++)
     {
-        chouche1[x]=init_neurone(vecteur ,taille_vecteur_Entree,ReLU);
-        sortie[x]=chouche1[x].sortie;
+        coucheN[x]=init_neurone(vecteur ,activation);
+        
+    
        
     }
-layer1.couche=chouche1;
-layer1.sortie=sortie;
+
+for (int x = 0; x <= taille_vecteur; x++)
+    {
+        sortie[x]=coucheN[x].sortie;
+   }
+
+layer1.couche=coucheN;
+
+//memcpy(layer1.sortie, sortie, sizeof layer1.n);
+
+for (int x = 0; x <= taille_vecteur; x++)
+    {
+    layer1.sortie[x]=sortie[x];
+    }
+
+
+
 
 return layer1;
 }
@@ -109,25 +130,34 @@ return layer1;
 
 //initalisation d'un perceptron avec un vecteur en entre et sa profondeur ici on décrémente le nombre de neurones pour chaque layer au fur et a mesur e
 
-s_Reseau init_perceptron(double vecteurEntree[],int profondeur){
+s_Reseau init_perceptron(double vecteurEntree[],int profondeur,
+                    int nbNeuroneParCouche,fonctionActivation activation){
 
 s_Reseau perceptron;
 perceptron.nb=profondeur;
 perceptron.couches = malloc(perceptron.nb * sizeof *(perceptron.couches));
-//nombre de neurones par couche quon va décrémenter au fur et a mesure
-int nb=2;
+//nombre de neurones par couche quon va décrémenter au fur et a mesure afin d'eviter l overfiting
+int nb=nbNeuroneParCouche;
 //Notre premiére couche avec notre vecteur n'entre et 3 neurones 
-perceptron.couches[0]=init_layer(vecteurEntree,3);
+perceptron.couches[0]=init_layer(vecteurEntree,nb,activation);
+nb--;
 printf("couche %d\n",0);
-visalisation(perceptron.couches[0]);
 taille_vecteur_Entree=perceptron.couches[0].n;
+visalisation(perceptron.couches[0],taille_vecteur_Entree);
+
+
+
+
+
  for (int x = 1; x < perceptron.nb; x++)
     {
-        perceptron.couches[x]=init_layer(perceptron.couches[x-1].sortie,nb);
+        //printf('%f,',perceptron.couches[x-1].sortie[x]);
+        perceptron.couches[x]=init_layer(perceptron.couches[x-1].sortie,nb,activation);
         nb--;
         taille_vecteur_Entree=perceptron.couches[x].n;
         printf("couche %d\n",x);
-         visalisation(perceptron.couches[x]);
+        visalisation(perceptron.couches[x],taille_vecteur_Entree);
+        
 
     }
 
