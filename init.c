@@ -3,6 +3,29 @@
 
 int taille_vecteur_Entree = 2;
 
+
+void visalisation(s_Layer layer1,int tailleVecteur){
+
+for (int x = 0; x < layer1.n; x++)
+    {
+        printf("**********neurone %d**********\n",x);
+        for (int j = 0; j <= tailleVecteur; j++)
+        {
+        if (j==(taille_vecteur_Entree/2))
+        
+           printf("* %f ,%f *------->%f \n", layer1.couche[x].x[j],layer1.couche[x].w[j],layer1.couche[x].sortie);
+        
+        else
+        printf("* %f ,%f *\n", layer1.couche[x].x[j],layer1.couche[x].w[j]);
+      }
+        printf("\n********************");
+       
+    }
+
+printf("\n");
+}
+
+
 void init_n_conf(int tailleVecteur)
 {
     
