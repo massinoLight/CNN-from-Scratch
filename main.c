@@ -1,156 +1,88 @@
 #include <stdio.h>
-
 #include <math.h>
 #include <stdlib.h>
 
-#define InputN 64		// number of neurons in the input layer
-#define HN 25			// number of neurons in the hidden layer
-#define OutN 64			// number of neurons in the output layer
-#define datanum 500		// number of training samples
+// Activation function and its derivative
+double sigmoid(double x) { return 1 / (1 + exp(-x)); }
+double dSigmoid(double x) { return x * (1 - x); }// Init all weights and biases between 0.0 and 1.0
+double init_weight() { return ((double)rand())/((double)RAND_MAX); }
 
-// sigmoid serves as avtivation function
-double sigmoid(double x){
-	return(1.0 / (1.0 + exp(-x)));
-}
+static const int numInputs = 2;
+static const int numHiddenNodes = 2;
+static const int numOutputs = 1;double hiddenLayer[numHiddenNodes];
+double outputLayer[numOutputs];double hiddenLayerBias[numHiddenNodes];
+double outputLayerBias[numOutputs];double hiddenWeights[numInputs][numHiddenNodes];
+double outputWeights[numHiddenNodes][numOutputs];
 
+static const int numTrainingSets = 4;double training_inputs[numTrainingSets][numInputs] = { {0.0f,0.0f},{1.0f,0.0f},{0.0f,1.0f},{1.0f,1.0f} };
+double training_outputs[numTrainingSets][numOutputs] = { {0.0f},{1.0f},{1.0f},{0.0f} };
+
+int epochs=500;
+double lr=0.1;
 
 int main(){
-	double sigmoid(double);
 	
-	char buffer[200];
-	double x_out[InputN];		// input layer
-	double hn_out[HN];			// hidden layer
-	double y_out[OutN];         // output layer
-	double y[OutN];				// expected output layer
-	double w[InputN][HN];		// weights from input layer to hidden layer
-	double v[HN][OutN];			// weights from hidden layer to output layer
-	
-	double deltaw[InputN][HN];  
-	double deltav[HN][OutN];	
-	
-	double hn_delta[HN];		// delta of hidden layer
-	double y_delta[OutN];		// delta of output layer
-	double error;
-	double errlimit = 0.001;
-	double alpha = 0.1, beta = 0.1;
-	int loop = 0;
-	int times = 500;
-	int i, j, m;
-	double max, min;
-	double sumtemp;
-	double errtemp;
-	
-	// training set
-	struct{
-		double input[InputN];
-		double teach[OutN];
-	}data[datanum];
-	
-	// Generate data samples
-	// You can use your own data!!!
-	for(m=0; m<datanum; m++){
-		for(i=0; i<InputN; i++)
-			data[m].input[i] = (double)rand()/32767.0;
-		for(i=0;i<OutN;i++)
-			data[m].teach[i] = (double)rand()/32767.0;
-	}
-
-	// Initializition
-	for(i=0; i<InputN; i++){
-		for(j=0; j<HN; j++){
-			w[i][j] = ((double)rand()/32767.0)*2-1;
-			deltaw[i][j] = 0;
-		}
-	}
-	for(i=0; i<HN; i++){
-		for(j=0; j<OutN; j++){
-			v[i][j] = ((double)rand()/32767.0)*2-1;
-			deltav[i][j] = 0;
-		}
-	}
-
-	// Training
-	while(loop < times){
-		loop++;
-		error = 0.0;
-
-		for(m=0; m<datanum ; m++){
-			// Feedforward
-			max = 0.0;
-			min = 0.0;
-			for(i=0; i<InputN; i++){
-				x_out[i] = data[m].input[i];
-				if(max < x_out[i])
-					max = x_out[i];
-				if(min > x_out[i])
-					min = x_out[i];
-			}
-			for(i=0; i<InputN; i++){
-				x_out[i] = (x_out[i] - min) / (max - min);
-			}
-
-			for(i=0; i<OutN ; i++){
-				y[i] = data[m].teach[i];
-			}
-
-			for(i=0; i<HN; i++){
-				sumtemp = 0.0;
-				for(j=0; j<InputN; j++)
-					sumtemp += w[j][i] * x_out[j];
-				hn_out[i] = sigmoid(sumtemp);		// sigmoid serves as the activation function
-			}
-
-			for(i=0; i<OutN; i++){
-				sumtemp = 0.0;
-				for(j=0; j<HN; j++)
-					sumtemp += v[j][i] * hn_out[j];
-				y_out[i] = sigmoid(sumtemp);
-			}
-
-			// Backpropagation
-			for(i=0; i<OutN; i++){
-				errtemp = y[i] - y_out[i];
-				y_delta[i] = -errtemp * sigmoid(y_out[i]) * (1.0 - sigmoid(y_out[i]));
-				error += errtemp * errtemp;
-			}
-
-			for(i=0; i<HN; i++){
-				errtemp = 0.0;
-				for(j=0; j<OutN; j++)
-					errtemp += y_delta[j] * v[i][j];
-				hn_delta[i] = errtemp * (1.0 + hn_out[i]) * (1.0 - hn_out[i]);
-			}
-
-			// Stochastic gradient descent
-			for(i=0; i<OutN; i++){
-				for(j=0; j<HN; j++){
-					deltav[j][i] = alpha * deltav[j][i] + beta * y_delta[i] * hn_out[j];
-					v[j][i] -= deltav[j][i];
-				}
-			}
-
-			for(i=0; i<HN; i++){
-				for(j=0; j<InputN; j++){
-					deltaw[j][i] = alpha * deltaw[j][i] + beta * hn_delta[i] * x_out[j];
-					w[j][i] -= deltaw[j][i];
-				}
-			}
-		}
-
-		// Global error 
-		error = error / 2;
-		if(loop%1000==0){
-			
-			sprintf(buffer, "%f", error);
-		}
-		if(error < errlimit)
-			break;
-
-		printf("The %d th training, error: %f\n", loop, error);
-	}
-
-return 0;
-
-
+// Iterate through the entire training for a number of epochs
+for (int n=0; n < epochs; n++) {  // As per SGD, shuffle the order of the training set
+  int trainingSetOrder[] = {0,1,2,3};
+  shuffle(trainingSetOrder,numTrainingSets);  // Cycle through each of the training set elements
+  for (int x=0; x<numTrainingSets; x++) {
+    int i = trainingSetOrder[x];
+  }
+}
+// Compute hidden layer activation
+for (int j=0; j<numHiddenNodes; j++) {
+  double activation=hiddenLayerBias[j];
+    for (int k=0; k<numInputs; k++) {
+      activation+=training_inputs[i][k]*hiddenWeights[k][j];
+    }
+  hiddenLayer[j] = sigmoid(activation);
 }
 
+
+// Compute output layer activation
+for (int j=0; j<numOutputs; j++) {
+  double activation=outputLayerBias[j];
+  for (int k=0; k<numHiddenNodes; k++) {
+    activation+=hiddenLayer[k]*outputWeights[k][j];
+  }
+  outputLayer[j] = sigmoid(activation);
+}
+
+
+// Compute change in output weights
+double deltaOutput[numOutputs];
+for (int j=0; j<numOutputs; j++) {
+  double dError = (training_outputs[i][j]-outputLayer[j]);
+  deltaOutput[j] = dError*dSigmoid(outputLayer[j]);
+}
+
+
+
+// Compute change in hidden weights
+double deltaHidden[numHiddenNodes];
+  for (int j=0; j<numHiddenNodes; j++) {
+    double dError = 0.0f;
+    for(int k=0; k<numOutputs; k++) {
+      dError+=deltaOutput[k]*outputWeights[j][k];
+    }
+  deltaHidden[j] = dError*dSigmoid(hiddenLayer[j]);
+}
+
+// Apply change in output weights
+for (int j=0; j<numOutputs; j++) {
+  outputLayerBias[j] += deltaOutput[j]*lr;
+    for (int k=0; k<numHiddenNodes; k++) {
+      outputWeights[k][j]+=hiddenLayer[k]*deltaOutput[j]*lr;
+    }
+}
+// Apply change in hidden weights
+for (int j=0; j<numHiddenNodes; j++) {
+  hiddenLayerBias[j] += deltaHidden[j]*lr;
+  for(int k=0; k<numInputs; k++) {
+    hiddenWeights[k][j]+=training_inputs[i][k]*deltaHidden[j]*lr;
+  }
+}
+
+return 0;
+}
