@@ -90,6 +90,15 @@ double *init_rand_w(double tableau[],int tailleTableau) {
 
 /*********************************************************************************************************************************/
 
+
+
+
+
+
+
+
+
+
 /*
 // Backprop
 void backpropagation(int numInputs ,int numHiddenNodes ,int numOutputs){
