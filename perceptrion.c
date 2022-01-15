@@ -1,95 +1,133 @@
-// Perceptron learning
-
-#include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
+ #include <stdio.h>
+ #include <math.h>
 
-#define ISIZE 2
-#define WSIZE ( ISIZE + 1 ) // weights + bias
-#define LEARNING_RATE  0.1
-#define ITERATIONS     100
+// Structure for the training and testing set
+typedef struct s_xor_set
+ {
+  double inputs[2]; // 2 inputs: a XOR b
+  double result;    // The expected result: 0 or 1
+} t_xor_set;
 
-typedef int ivector[ ISIZE ];
-typedef float wvector[ WSIZE ];
+// All the possibilities you can make with the XOR operator
+t_xor_set xor_set[] = {
+   {{0, 0}, 0},
+   {{0, 1}, 1},
+   {{1, 0}, 1},
+   {{1, 1}, 0},
+ };
 
-wvector weights;
+#define NEURON_SIZE 2 // The non-modular part ;-)
+// Why 2 inputs for every neuron and every layer ?
+// The intermediate layer feeds itself directly from the input, so a 2 input
+// array, and the output layer feeds itself from the intermediate layer,
+// which has two neurons, which is why we also need a 2 input array
 
-void initialize( void )
+// The neuron structure
+typedef struct s_neuron
+ {
+  double inputs[NEURON_SIZE];
+  double weights[NEURON_SIZE]; // We need a weight for each input
+  double bias;
+} t_neuron;
+
+
+
+#define SIGMOID(x)       ( 1. / (1. + exp(-x)) )
+#define SIGMOID_DERIV(x) ( x * (1. - x) )
+
+// Returns int between 0 and max:
+#define RANDOM_RANGE(max) ( rand() % max )
+// Returns double between 0 and 1:
+#define RAND_DOUBLE       ( (double)rand()/(double)RAND_MAX )
+
+void initialize_neuron(t_neuron *n)
 {
-   // Seed the random number generator
-   srand( time( NULL ) );
-
-   // Initialize the weights with random values
-   for ( int i = 0 ; i < WSIZE ; i++ ) 
-   {
-      weights[ i ] = ( ( float ) rand( ) / ( float ) RAND_MAX );
-   }
+  /* Initializes the neuron weights and bias with random values */
+  for(size_t i = 0; i < NEURON_SIZE; i++)
+    n->weights[i] = RAND_DOUBLE;
+  n->bias = RAND_DOUBLE;
 }
 
-int feedforward( ivector inputs )
+double forward(t_neuron *n)
 {
-   int i;
-   float sum = 0.0;
+  /* Computes the result for the neuron */
 
-   // Calculate inputs * weights
-   for ( i = 0 ; i < ISIZE ; i++ ) sum += weights[ i ] * ( float ) inputs[ i ];
+  double result = 0;
 
-   // Add in the bias
-   sum += weights[ i ];
+  for(size_t i = 0; i < NEURON_SIZE; i++)
+    result += n->inputs[i] * n->weights[i];
+  result += n->bias;
 
-   // Activation function (1 if value >= 1.0).
-   return ( sum >= 1.0 ) ? 1 : 0;
+  return SIGMOID(result);
 }
 
-void train( void )
+void backward(t_neuron *n, double error)
 {
-   int iterations = 0;
-   int iteration_error = 0;
-   int desired_output, output, error;
+  /* Updates the neuron weights and bias in function of the given error */
 
-   // Train the boolean OR set
-   ivector test[4] = { { 0, 0 }, { 0, 1 }, { 1, 0 }, { 1, 1 } };
-
-   do 
-   {
-      iteration_error = 0.0;
-
-      printf( "Iteration %d\n", iterations );
-
-      for ( int i = 0 ; i < ( sizeof( test ) / sizeof( ivector ) ) ; i++ )
-      {
-         desired_output = test[ i ][ 0 ] || test[ i ][ 1 ];
-         output = feedforward( test[ i ] );
-
-         error = desired_output - output;
-
-         printf("%d or %d = %d (%d)\n", test[i][0], test[i][1], output, desired_output );
-
-         weights[ 0 ] += ( LEARNING_RATE * ( ( float ) error * ( float )test[ i ][ 0 ] ) );
-         weights[ 1 ] += ( LEARNING_RATE * ( ( float ) error * ( float )test[ i ][ 1 ] ) );
-         weights[ 2 ] += ( LEARNING_RATE * ( float ) error );
-
-         iteration_error += ( error * error );
-      }
-
-      printf( "Iteration error %d\n", iteration_error );
-
-      printf("\n");
-
-   } while ( ( iteration_error > 0.0 ) && ( iterations++ < ITERATIONS ) );
-
-   return;
+  for(size_t i = 0; i < NEURON_SIZE; i++)
+    n->weights[i] += error * n->inputs[i];
+  n->bias += error;
 }
 
-
-int main( void )
+int main()
 {
-   initialize( );
+  /* Creates and train our neural network */
 
-   train( );
+  /* INIT */
+  // Build intermediate layer
+  t_neuron intermediate_neurons[NEURON_SIZE]; // == 2
+  for (size_t i = 0; i < NEURON_SIZE; i++)
+    initialize_neuron(&intermediate_neurons[i]);
 
-   printf("Final weights %f %f bias %f\n", weights[0], weights[1], weights[2]);
+  // Build output layer with one neuron
+  t_neuron output_neuron;
+  initialize_neuron(&output_neuron);
+  /* END INIT */
 
-   return 0;
+  for (size_t epoch = 0; epoch < 4000; epoch++)
+  {
+    // We give it a random test
+    t_xor_set t = xor_set[RANDOM_RANGE(4)];
+     printf("\n%d XOR %d ", (int)t.inputs[0], (int)t.inputs[1]);
+
+    /* FEEDFORWARD  */
+    for (size_t i = 0; i < NEURON_SIZE; i++)
+    {
+      // Feed the intermediate_layer
+      t_neuron *l = &intermediate_neurons[i];
+      for (size_t j = 0; j < NEURON_SIZE; j++)
+         l->inputs[j] = t.inputs[j];
+
+      // Feed the output layer
+      output_neuron.inputs[i] = forward(l);
+    }
+
+    // Determine the output of the neural network
+    double output = forward(&output_neuron);
+    /* END FEEDFORWARD */
+
+    /* BACKWARD */
+    // Determine the error between what we found and the expected result
+    double output_err = SIGMOID_DERIV(output) * (t.result - output);
+
+    // Update output neuron
+    backward(&output_neuron, output_err);
+
+    // Update the neurons in the intermediate layer
+    for (size_t i = 0; i < NEURON_SIZE; i++)
+    {
+      double err = SIGMOID_DERIV(output_neuron.inputs[i])
+                 * output_err
+                 * output_neuron.weights[i];
+
+      backward(&intermediate_neurons[i], err);
+    }
+    /* END BACKWARD */
+
+    printf("= %d(%d) %f(ERR:%f)", output > 0.5, (int)t.result, output, output_err);
+  }
+
+  return 0;
 }
-

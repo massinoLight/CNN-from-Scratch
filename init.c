@@ -9,8 +9,10 @@ void visalisation(s_Layer layer1,int tailleVecteur){
 for (int x = 0; x < layer1.n; x++)
     {
         printf("**********neurone %d**********\n",x);
+        printf("* %f  *\n", layer1.couche[x].bias);
         for (int j = 0; j <= tailleVecteur; j++)
         {
+        
         if (j==(taille_vecteur_Entree/2))
         
            printf("* %f ,%f *------->%f \n", layer1.couche[x].x[j],layer1.couche[x].w[j],layer1.couche[x].sortie);
@@ -50,7 +52,7 @@ return neurone;
 }
 
 
-//initialisation d'un neuron  
+//initialisation d'un neuron  pour la partie FEEDFORWARD
 s_Neurone init_neurone(double vecteurEntree[],fonctionActivation activation)
 {
 s_Neurone neurone;
@@ -68,13 +70,16 @@ neurone.w=init_rand_w(neurone.w,taille_vecteur_Entree);
 
 neurone.x=vecteurEntree;
 
-
+neurone.bias=init_bias();
 
 //on somme les entrées 
 for (int i = 0 ; i < taille_vecteur_Entree ; i++)
 {
 somme=somme+(neurone.w[i]*neurone.x[i]);
 }
+
+//on ajoute le bias 
+somme=somme+neurone.bias;
 
 //On applique la fonction d'activation selon celle choisit en paramétre 
 
@@ -156,6 +161,7 @@ return layer1;
 s_Reseau init_perceptron(double vecteurEntree[],int profondeur,
                     int nbNeuroneParCouche,fonctionActivation activation){
 
+
 s_Reseau perceptron;
 perceptron.nb=profondeur;
 perceptron.couches = malloc(perceptron.nb * sizeof *(perceptron.couches));
@@ -188,3 +194,17 @@ visalisation(perceptron.couches[0],taille_vecteur_Entree);
 return perceptron;
 
 }
+
+
+
+
+
+/*****************************************************************************************************************************/
+void free_perceptro(s_Reseau perceptron){
+  //free(perceptron.nb);
+  free(perceptron.couches);
+
+}
+
+
+

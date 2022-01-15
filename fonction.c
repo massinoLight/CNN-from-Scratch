@@ -1,6 +1,8 @@
-
 #include "fonction.h"
-
+#define ISIZE 2
+#define WSIZE ( ISIZE + 1 ) // weights + bias
+#define LEARNING_RATE  0.1
+#define ITERATIONS     500
 
 
 double fIdentite(double x){
@@ -86,14 +88,59 @@ double *init_rand_w(double tableau[],int tailleTableau) {
 }
 
 
-
-
 /*********************************************************************************************************************************/
+double init_bias(){
+
+	return ( (double)rand()/(double)RAND_MAX );
+}
 
 
 
+/***************************************************************************************************************************
 
 
+void train( double entree[],double target[] )
+{
+   int iterations = 0;
+   int iteration_error = 0;
+   int desired_output, output, error;
+
+   // Train the boolean OR set
+   //ivector test[4] = { { 0, 0 }, { 0, 1 }, { 1, 0 }, { 1, 1 } };
+
+   do 
+   {
+      iteration_error = 0.0;
+
+      printf( "Iteration %d\n", iterations );
+
+      for ( int i = 0 ; i < ( sizeof( entree ) / sizeof( ivector ) ) ; i++ )
+      {
+         desired_output = test[ i ][ 0 ] ^= test[ i ][ 1 ];
+         output = feedforward( test[ i ] );
+
+         error = desired_output - output;
+
+
+         printf("%d xor %d = %d (%d)\n", test[i][0], test[i][1], output, desired_output );
+
+         weights[ 0 ] += ( LEARNING_RATE * ( ( float ) error * ( float )test[ i ][ 0 ] ) );
+         weights[ 1 ] += ( LEARNING_RATE * ( ( float ) error * ( float )test[ i ][ 1 ] ) );
+         weights[ 2 ] += ( LEARNING_RATE * ( float ) error );
+
+         iteration_error += ( error * error );
+      }
+
+      printf( "Iteration error %d\n", iteration_error );
+
+      printf("\n");
+
+   } while ( ( iteration_error > 0.0 ) && ( iterations++ < ITERATIONS ) );
+
+   return;
+}
+
+******/
 
 
 

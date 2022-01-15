@@ -41,6 +41,7 @@ struct s_conf
 {
   double *x;//vecteur d'entré
   double *w;//les poids synaptiques
+  double bias;//le biais 
   double sortie;//valeur en sorite du neurone 
 };
 typedef struct Neurone s_Neurone;
@@ -75,3 +76,28 @@ struct Reseau
 };
 
 typedef struct Reseau s_Reseau;
+
+
+/*
+Structure de nos base de données 
+*/
+typedef struct dataset{
+    int n_entries;
+    int n_features;
+    int n_truths;
+    double** features;
+    double** truths;
+    char** labels;
+}dataset;
+
+
+
+/*Structure pour nos training and testing set
+
+*/
+typedef struct s_xor_set
+ {
+  double inputs[2]; // 2 inputs: a XOR b
+  double result;    // The expected result: 0 or 1
+} t_xor_set;
+

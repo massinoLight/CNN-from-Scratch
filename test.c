@@ -4,8 +4,8 @@
 #include "init.c"
 
 
-
-
+//pointer sur une case de la structure data set du xor 
+#define RANDOM_RANGE(max) ( rand() % max )
 
 
 
@@ -13,16 +13,25 @@ int main()
 {
 srand(time(NULL));
 double input[] = {0.0, 1.0};  
+t_xor_set xor_set[] = {
+
+   {{0, 0}, 0},
+   {{0, 1}, 1},
+   {{1, 0}, 1},
+   {{1, 1}, 0},
+ };
+
+t_xor_set t = xor_set[RANDOM_RANGE(4)];
+
+
 int length = sizeof(input)/sizeof(input[0]); 
-int profondeurReseau=2;  
-int nbNeuroneParCouche=2;
-//double otput[10] = {1.0, 3.0, 7.0, 3.0,2.0,7.0,4.0,2.0,1.0,0.0}; 
-//on initalise la taille du vecteur d'entre je met 10 au depart mais on va recup ca selon les images dentrées  
+
+ 
 init_n_conf(length);
-s_Reseau perceptron=init_perceptron(input,profondeurReseau,nbNeuroneParCouche,ReLU);
+s_Reseau perceptron=init_perceptron(t.inputs,2,2,sigmoide);
 
 
-
+free_perceptro(perceptron);
 return 0;
 
 }
