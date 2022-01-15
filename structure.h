@@ -9,6 +9,14 @@ enum fonctionActivation
 };
 
 
+typedef enum DerviveefonctionActivation DerviveefonctionActivation;
+enum DerviveefonctionActivation
+{
+    ReLU, sigmoide, tangante,Identite,Marche
+};
+
+
+
 /*
  Structure de notre réseau de neurons
  */

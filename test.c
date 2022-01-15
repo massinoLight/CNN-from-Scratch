@@ -6,6 +6,7 @@
 
 //pointer sur une case de la structure data set du xor 
 #define RANDOM_RANGE(max) ( rand() % max )
+#define SIGMOID_DERIV(x) ( x * (1. - x) )
 
 
 
@@ -29,6 +30,9 @@ int length = sizeof(input)/sizeof(input[0]);
  
 init_n_conf(length);
 s_Reseau perceptron=init_perceptron(t.inputs,2,2,sigmoide);
+
+// Determine the error between what we found and the expected result
+
 
 
 free_perceptro(perceptron);

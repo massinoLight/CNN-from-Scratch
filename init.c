@@ -196,7 +196,52 @@ return perceptron;
 }
 
 
+/*********************************************************************************************************************************/
 
+void backward(s_Neurone *n,int NEURON_SIZE, double error)
+{
+  /* Updates the neuron weights and bias in function of the given error */
+
+  for(size_t i = 0; i < NEURON_SIZE; i++)
+    n->w[i] += error * n->x[i];
+  n->bias += error;
+}
+
+
+/********************************************************************************************************************************/
+
+void train(s_Reseau p,t_xor_set sortie_attendu,DerviveefonctionActivation derivee){
+
+
+//boucler pour tout les neurones du perceptron ne pas oublier de mettre la derivée pour chaque fonction d'activation 
+
+//double output_err = SIGMOID_DERIV((p.couches[1].couche->sortie) * (sortie_attendu.result - p.couches[1].couche->sortie));
+switch( derivee )
+{
+    case ReLU:
+        double output_err = SIGMOID_DERIV((p.couches[1].couche->sortie) * (sortie_attendu.result - p.couches[1].couche->sortie));
+        break;
+    case tangante:
+        double output_err = SIGMOID_DERIV((p.couches[1].couche->sortie) * (sortie_attendu.result - p.couches[1].couche->sortie));
+        break;
+    case sigmoide:
+        double output_err = SIGMOID_DERIV((p.couches[1].couche->sortie) * (sortie_attendu.result - p.couches[1].couche->sortie));
+        break;
+    case Identite:
+        double output_err = SIGMOID_DERIV((p.couches[1].couche->sortie) * (sortie_attendu.result - p.couches[1].couche->sortie));
+        break;
+    case Marche:
+        double output_err = SIGMOID_DERIV((p.couches[1].couche->sortie) * (sortie_attendu.result - p.couches[1].couche->sortie));
+        break;
+    default:
+       double output_err = SIGMOID_DERIV((p.couches[1].couche->sortie) * (sortie_attendu.result - p.couches[1].couche->sortie));
+       break;
+
+}
+
+//backward(p.couches[i].couche,taille_vecteur_Entree,output_err);
+
+}
 
 
 /*****************************************************************************************************************************/
