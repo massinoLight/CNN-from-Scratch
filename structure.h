@@ -12,7 +12,7 @@ enum fonctionActivation
 typedef enum DerviveefonctionActivation DerviveefonctionActivation;
 enum DerviveefonctionActivation
 {
-    ReLU, sigmoide, tangante,Identite,Marche
+    DReLU, Dsigmoide, Dtangante,DIdentite,DMarche
 };
 
 
@@ -22,7 +22,7 @@ enum DerviveefonctionActivation
  */
 struct s_conf
 {
-  int n;  // taille du vecteur d'entré 
+  int taille_vecteur_entree;  // taille du vecteur d'entré 
    
   
 } s_conf;
@@ -109,3 +109,11 @@ typedef struct s_xor_set
   double result;    // The expected result: 0 or 1
 } t_xor_set;
 
+#define NEURON_SIZE 2 
+
+typedef struct s_neuron
+ {
+  double inputs[NEURON_SIZE];
+  double weights[NEURON_SIZE]; // We need a weight for each input
+  double bias;
+} t_neuron;

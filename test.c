@@ -6,14 +6,26 @@
 
 //pointer sur une case de la structure data set du xor 
 #define RANDOM_RANGE(max) ( rand() % max )
-#define SIGMOID_DERIV(x) ( x * (1. - x) )
+
+void visalisationNeurone(s_Neurone n,int tailleVecteur){
+
+ printf("* %f  *\n", n.bias);
+for (int x = 0; x < tailleVecteur; x++)
+    {
+        printf("* %f ,%f *\n", n.x [x],n.w[x]);
+      }
+        printf("\n********************");
+     
+printf("\n");
+}
 
 
 
 int main()
 {
 srand(time(NULL));
-double input[] = {0.0, 1.0};  
+
+
 t_xor_set xor_set[] = {
 
    {{0, 0}, 0},
@@ -22,16 +34,22 @@ t_xor_set xor_set[] = {
    {{1, 1}, 0},
  };
 
-t_xor_set t = xor_set[RANDOM_RANGE(4)];
-
-
-int length = sizeof(input)/sizeof(input[0]); 
-
- 
+t_xor_set xor = xor_set[RANDOM_RANGE(4)];
+//on calcule la taille du vecteur d'entrée 
+int length = sizeof(xor.inputs)/sizeof(xor.inputs[0]); 
 init_n_conf(length);
-s_Reseau perceptron=init_perceptron(t.inputs,2,2,sigmoide);
 
-// Determine the error between what we found and the expected result
+double *poids=(double*)malloc(sizeof(double)*s_conf.taille_vecteur_entree);
+poids=init_rand_w(poids,s_conf.taille_vecteur_entree);
+
+
+
+
+
+s_Reseau perceptron=init_perceptron(xor.inputs,poids,2,2,ReLU);
+
+//boucler ici pour n nombre diteration ou jusqua condition darret
+train(&perceptron,xor,1);
 
 
 

@@ -1,8 +1,7 @@
 #include "fonction.h"
-#define ISIZE 2
-#define WSIZE ( ISIZE + 1 ) // weights + bias
-#define LEARNING_RATE  0.1
-#define ITERATIONS     500
+
+
+
 
 
 double fIdentite(double x){
@@ -10,6 +9,11 @@ double fIdentite(double x){
 return x;
 }
 
+/******************************************************************************************************************************/
+double DfIdentite(double x){
+
+return 1;
+}
 
 
 /******************************************************************************************************************************/
@@ -31,21 +35,30 @@ double fsigmoid(double x){
 
  return 1/(1+exp(-x));
 }
+/******************************************************************************************************************************/
+double Dfsigmoid(double x){
 
+ return fsigmoid(x)*(1-fsigmoid(x));
+}
 
 
 /******************************************************************************************************************************/
-
-
 
 double tanhfs(double x){
 
  return (2/(1+exp(-2*x)))-1;
 }
+/*******************************************************************************************************************************/
+double Dtanhfs(double x){
+
+ return (1-(tanhfs(x)*tanhfs(x)));
+}
 
 
 
 /******************************************************************************************************************************/
+
+
 double fRelu(double x){
 
  if(x<0)
@@ -54,11 +67,23 @@ double fRelu(double x){
     return x;
 
 }
-
-
-
-
 /******************************************************************************************************************************/
+
+double DfRelu(double x){
+
+ if(x<0)
+    return 0.0;
+ else
+    return 1.0;
+
+}
+
+
+
+
+
+
+/*******************************************************************************************************************************/
 double somme(double tab[], double taille) {
    int i;
 
@@ -95,8 +120,39 @@ double init_bias(){
 }
 
 
+/**********************************************************************************************************************************/
+//Fonction de perte ici Mean Squared Error, on peut en faire d'autres
+double loss_func(double truth, double prediction)
+{
+    return pow(truth-prediction, (double)2);
+}
 
+//Fonction de perte dérivée. Ici dérivée de Mean Squared Error
+double loss_prime(double truth, double prediction)
+{
+    return 2*(prediction-truth);
+}
 
+double get_loss(double* output, double truth, int n_values)
+{
+    double result =0;
+    for(int i=0;i<n_values;i++)
+    {
+        result+=loss_func(truth, output[i]);
+    }
+    return result/n_values;
+}
+
+double* get_gradient(double* output, double truth, int n_values)
+{
+    double* gradient = calloc(n_values, sizeof(double));
+    double invert_n_values = (double)1/n_values;
+    for(int i=0;i<n_values;i++)
+    {
+        gradient[i]=loss_prime(truth, output[i])*invert_n_values;
+    }
+    return gradient;
+}
 
 /***************************************************************************************************************************
 
